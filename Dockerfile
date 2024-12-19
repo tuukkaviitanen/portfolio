@@ -1,13 +1,17 @@
 FROM golang:1.23.3
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY go.mod go.sum ./
 
 RUN go mod download
 
-COPY . .
+COPY ./src ./src
 
 RUN go build src/server.go
+
+VOLUME ["/app/portfolio.yaml"]
+
+EXPOSE 8080
 
 CMD [ "./server" ]

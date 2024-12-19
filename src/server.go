@@ -57,27 +57,40 @@ type GitHubRepository struct {
 	Language     string `json:"language"`
 }
 
+var GITHUB_TOKEN = os.Getenv("GITHUB_TOKEN")
+var GITHUB_AUTHORIZATION_HEADER = fmt.Sprintf("Bearer %s", GITHUB_TOKEN)
+
 func main() {
 	// Parse the template
 	template, err := template.ParseFiles("./src/index.html")
 	if err != nil {
-		panic(err)
+		log.Fatalln("Fetching template file failed")
 	}
 
 	yamlFile, err := os.ReadFile("./portfolio.yaml")
 	if err != nil {
-		panic(err)
+		log.Fatalln("Reading portfolio.yaml file failed")
 	}
 
 	initialData := Portfolio{}
-	yaml.Unmarshal(yamlFile, &initialData)
+	err = yaml.Unmarshal(yamlFile, &initialData)
+	if err != nil {
+		log.Fatalln("Parsing portfolio.yaml file failed")
+	}
 
 	// Handle the request and render the template
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
 		userUrl := fmt.Sprintf("https://api.github.com/users/%s", initialData.GitHubUsername)
 
-		resp, err := http.Get(userUrl)
+		req, err := http.NewRequest("GET", userUrl, nil)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		req.Header.Set("Authorization", GITHUB_AUTHORIZATION_HEADER)
+
+		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -121,14 +134,23 @@ func main() {
 		for i := range data.Projects {
 			repoUrl := fmt.Sprintf("https://api.github.com/repos/%s", data.Projects[i].GitHubRepository)
 
-			resp, err := http.Get(repoUrl)
+			repoReq, err := http.NewRequest("GET", repoUrl, nil)
 			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			repoReq.Header.Set("Authorization", GITHUB_AUTHORIZATION_HEADER)
+
+			resp, err := http.DefaultClient.Do(repoReq)
+			if err != nil {
+				log.Printf("Failed to fetch GitHub repository: %s\n%v\n", err.Error(), repoReq)
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
 			defer resp.Body.Close()
 
 			if resp.StatusCode != http.StatusOK {
+				log.Printf("Failed to fetch GitHub repository, status not okay: %s\n", resp.Status)
 				http.Error(w, "Failed to fetch GitHub repository", http.StatusInternalServerError)
 				return
 			}
