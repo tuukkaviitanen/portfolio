@@ -2,40 +2,39 @@
 <html>
   <head>
     <title>{{ .Title }}</title>
+    <link rel="icon" href="{{ .ImageUrl }}" />
     <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
-    <h1>Hello, {{ .Title }}!</h1>
     <div>
-      <img
-        src="https://avatars.githubusercontent.com/u/97726090?v=4"
-        width="200"
-      />
-      <h1>"This is the header"</h1>
+      <img src="{{ .ImageUrl }}" width="200" />
+      <h1>{{ .Title }}</h1>
       <div>
-        <p>"This is the description"</p>
+        <p>{{ .Description }}</p>
       </div>
       <div>
-        <p>"Link"</p>
-        <p>"Link"</p>
-        <p>"Link"</p>
+        {{ range .Links }}
+        <img src="{{ .IconUrl }}" width="20" />
+        <a href="{{ .Url }}">{{ .Name }}</a>
+        {{ end }}
       </div>
     </div>
-    <h2>"Projects"</h2>
+    <h2>Projects</h2>
     <div>
+      {{ range .Projects }}
       <div>
-        <img
-          src="https://avatars.githubusercontent.com/u/97726090?v=4"
-          width="200"
-        />
-        <div>
-          <h3>"Project name"</h3>
-          <p>"URL"</p>
-          <p>"Repository URL"</p>
-          <p>"Description"</p>
-          <p>"Languages"</p>
-        </div>
+        <img src="{{ .ImageUrl }}" width="200" />
+        <h2>{{ .Name }}</h2>
+        <p>{{ .Description }}</p>
+        <p>{{ .Url }}</p>
+        <p>{{ .RepositoryUrl }}</p>
+        <ul>
+          {{ range .Languages }}
+          <li>{{ . }}</li>
+          {{ end }}
+        </ul>
       </div>
+      {{ end }}
     </div>
   </body>
 </html>

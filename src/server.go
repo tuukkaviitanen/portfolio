@@ -6,20 +6,66 @@ import (
 	"net/http"
 )
 
+type Project struct {
+	Name          string
+	Url           string
+	Description   string
+	RepositoryUrl string
+	ImageUrl      string
+	Languages     []string
+}
+
+type Link struct {
+	Name    string
+	Url     string
+	IconUrl string
+}
+
+type Portfolio struct {
+	Title       string
+	Description string
+	ImageUrl    string
+	Links       []Link
+	Projects    []Project
+}
+
 func main() {
 	// Parse the template
-	tmpl, err := template.ParseFiles("src/index.html")
+	tmpl, err := template.ParseFiles("./src/index.html")
 	if err != nil {
 		panic(err)
 	}
 
-	log.Println("Template parsed successfully")
-
 	// Define the data to be passed to the template
-	data := struct {
-		Title string
-	}{
-		Title: "World",
+	data := Portfolio{
+		Title:       "Tuukka Viitanen",
+		Description: "Software Developer",
+		ImageUrl:    "https://avatars.githubusercontent.com/u/97726090?v=4",
+		Links: []Link{
+			{
+				Name:    "GitHub",
+				Url:     "https://google.com",
+				IconUrl: "https://avatars.githubusercontent.com/u/97726090?v=4",
+			},
+		},
+		Projects: []Project{
+			{
+				Name:          "Project 1",
+				Url:           "https://google.fi",
+				Description:   "This was a great project",
+				RepositoryUrl: "https://google.com",
+				ImageUrl:      "https://avatars.githubusercontent.com/u/97726090?v=4",
+
+				Languages: []string{"Go", "JavaScript"},
+			},
+			{
+				Name:          "Project 2",
+				Url:           "https://google.fi",
+				Description:   "This was a great project",
+				RepositoryUrl: "https://google.com",
+				ImageUrl:      "https://avatars.githubusercontent.com/u/97726090?v=4",
+			},
+		},
 	}
 
 	// Handle the request and render the template
