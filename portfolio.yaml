@@ -1,0 +1,28 @@
+title: "My Portfolio"
+description: "A collection of my projects and links."
+image_url: "https://example.com/my-image.png"
+github_username: tuukkaviitanen
+links:
+  - name: "GitHub"
+    url: "https://github.com/myprofile"
+    icon_url: "https://example.com/github-icon.png"
+  - name: "LinkedIn"
+    url: "https://linkedin.com/in/myprofile"
+    icon_url: "https://example.com/linkedin-icon.png"
+projects:
+  - name: "Project One"
+    url: "https://example.com/project-one"
+    description: "This is the first project."
+    repository_url: "https://github.com/myprofile/project-one"
+    image_url: "https://example.com/project-one-image.png"
+    languages:
+      - "Go"
+      - "JavaScript"
+  - name: "Project Two"
+    url: "https://example.com/project-two"
+    repository_url: "https://github.com/myprofile/project-two"
+    image_url: "https://example.com/project-two-image.png"
+    languages:
+      - "Python"
+      - "HTML"
+      - "CSS"

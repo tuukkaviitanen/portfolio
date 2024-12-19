@@ -1,6 +1,10 @@
-FROM golang:1.23.0
+FROM golang:1.23.3
 
 WORKDIR /usr/src/app
+
+COPY go.mod go.sum ./
+
+RUN go mod download
 
 COPY . .
 
