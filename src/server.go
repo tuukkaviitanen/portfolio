@@ -125,6 +125,13 @@ func main() {
 
 		const iconUrlTemplate = "https://www.google.com/s2/favicons?domain=%s&sz=64"
 
+		data.Links = append(data.Links, Link{
+			Name:    "GitHub",
+			Url:     githubUser.HtmlUrl,
+			IconUrl: fmt.Sprintf(iconUrlTemplate, githubUser.HtmlUrl),
+		},
+		)
+
 		for i := range data.Links {
 			if data.Links[i].IconUrl == "" {
 				data.Links[i].IconUrl = fmt.Sprintf(iconUrlTemplate, data.Links[i].Url)
@@ -134,16 +141,16 @@ func main() {
 		for i := range data.Projects {
 			repoUrl := fmt.Sprintf("https://api.github.com/repos/%s", data.Projects[i].GitHubRepository)
 
-			repoReq, err := http.NewRequest("GET", repoUrl, nil)
+			req, err := http.NewRequest("GET", repoUrl, nil)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-			repoReq.Header.Set("Authorization", GITHUB_AUTHORIZATION_HEADER)
+			req.Header.Set("Authorization", GITHUB_AUTHORIZATION_HEADER)
 
-			resp, err := http.DefaultClient.Do(repoReq)
+			resp, err := http.DefaultClient.Do(req)
 			if err != nil {
-				log.Printf("Failed to fetch GitHub repository: %s\n%v\n", err.Error(), repoReq)
+				log.Printf("Failed to fetch GitHub repository: %s\n%v\n", err.Error(), req)
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
@@ -173,7 +180,7 @@ func main() {
 				data.Projects[i].Url = githubRepo.Homepage
 			}
 
-			if data.Projects[i].ImageUrl == "" {
+			if data.Projects[i].ImageUrl == "" && data.Projects[i].Url != "" {
 				data.Projects[i].ImageUrl = fmt.Sprintf(iconUrlTemplate, data.Projects[i].Url)
 			}
 
@@ -182,20 +189,27 @@ func main() {
 			}
 
 			if len(data.Projects[i].Languages) == 0 {
-				langResp, err := http.Get(githubRepo.LanguagesURL)
+				req, err := http.NewRequest("GET", githubRepo.LanguagesURL, nil)
 				if err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					return
 				}
-				defer langResp.Body.Close()
+				req.Header.Set("Authorization", GITHUB_AUTHORIZATION_HEADER)
 
-				if langResp.StatusCode != http.StatusOK {
+				resp, err := http.DefaultClient.Do(req)
+				if err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+					return
+				}
+				defer resp.Body.Close()
+
+				if resp.StatusCode != http.StatusOK {
 					http.Error(w, "Failed to fetch GitHub repository languages", http.StatusInternalServerError)
 					return
 				}
 
 				var languages map[string]int
-				if err := json.NewDecoder(langResp.Body).Decode(&languages); err != nil {
+				if err := json.NewDecoder(resp.Body).Decode(&languages); err != nil {
 					http.Error(w, err.Error(), http.StatusInternalServerError)
 					return
 				}

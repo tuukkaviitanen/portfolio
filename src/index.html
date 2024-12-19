@@ -26,8 +26,8 @@
         <img src="{{ .ImageUrl }}" width="64" />
         <h2>{{ .Name }}</h2>
         <p>{{ .Description }}</p>
-        <p>{{ .Url }}</p>
-        <a>{{ .GitHubRepositoryUrl }}</a>
+        <a href="{{ .Url }}">{{ .Url }}</a>
+        <a href="{{ .GitHubRepositoryUrl }}">{{ .GitHubRepositoryUrl }}</a>
         <ul>
           {{ range .Languages }}
           <li>{{ . }}</li>
