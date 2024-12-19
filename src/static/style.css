@@ -1,3 +1,120 @@
 body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
   margin: 0;
+  padding: 0;
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+header {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+  width: 80%;
+  margin: 20px auto;
+  overflow: hidden;
+}
+
+.profile {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.profile img {
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.profile h1 {
+  font-size: 2.5em;
+  margin: 0;
+}
+
+.profile p {
+  font-size: 1.2em;
+  line-height: 1.6em;
+  color: #b0b0b0;
+}
+
+.links {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.links img {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.links a {
+  font-size: 1.2em;
+  color: #4caf50;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+.projects {
+  margin-top: 40px;
+}
+
+.projects h2 {
+  font-size: 2em;
+  color: #4caf50;
+  margin-bottom: 20px;
+}
+
+.project {
+  background: #1e1e1e;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+}
+
+.project img {
+  float: left;
+  margin-right: 20px;
+  border-radius: 8px;
+}
+
+.project h2 {
+  margin-top: 0;
+}
+
+.project p {
+  color: #b0b0b0;
+}
+
+.project a {
+  display: block;
+  color: #4caf50;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.project a:hover {
+  text-decoration: underline;
+}
+
+.project ul {
+  list-style: none;
+  padding: 0;
+}
+
+.project ul li {
+  display: inline-block;
+  background: #4caf50;
+  color: white;
+  padding: 5px 10px;
+  margin: 5px 5px 0 0;
+  border-radius: 4px;
 }
