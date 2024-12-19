@@ -23,11 +23,11 @@
     <div>
       {{ range .Projects }}
       <div>
-        <img src="{{ .ImageUrl }}" width="200" />
+        <img src="{{ .ImageUrl }}" width="64" />
         <h2>{{ .Name }}</h2>
         <p>{{ .Description }}</p>
         <p>{{ .Url }}</p>
-        <p>{{ .RepositoryUrl }}</p>
+        <p>{{ .GitHubRepositoryUrl }}</p>
         <ul>
           {{ range .Languages }}
           <li>{{ . }}</li>
